@@ -59,16 +59,16 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <header class="site-header">
 
   <div class="wrapper">
-<nav class="site-nav">
-  <a href="#" class="menu-icon">
+<nav class="site-nav" aria-label="Primary navigation">
+  <button class="menu-icon" type="button" aria-expanded="false" aria-controls="site-navigation" aria-label="Open navigation menu">
     <svg viewBox="0 0 18 15">
       <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
       <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
       <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
     </svg>
-  </a>
+  </button>
 
-  <div class="trigger">
+  <div class="trigger" id="site-navigation">
     <a class="page-link" href="#bio"><b>Biography</b></a>
     <!-- <a class="page-link" href="#timeline"><b>Experiences</b></a> -->
     <a class="page-link" href="#publications"><b>Publications</b></a>
@@ -81,15 +81,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   </div>
 </header>
 
-  <div id="profile-cover" class="cover shallow-bg img-responsive"> 
+  <section id="profile-cover" class="cover shallow-bg img-responsive" aria-labelledby="my-name">
     <div id="profile-namecard" class="profile-wrapper wrapper-light">
       <div id="my-pic" class="profile-col profile-col-1">
         <img id="profile-avatar" src="images/myself.jpg" alt="Ruiyan ZHENG" class="circle-img border-dark">
       </div>
       <div id="my-contact" class="profile-col profile-col-2">
-        <div id="my-name" class="text-grey-dark">
-          Ruiyan ZHENG<br>
-        </div>
+        <h1 id="my-name" class="text-grey-dark">Ruiyan ZHENG</h1>
         <div id="my-title" class="text-grey">
           Ph.D. Student @ NUS
         </div>
@@ -99,27 +97,27 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 	</div>
         <div class="social-media">
-          <a href="https://scholar.google.com/citations?user=3SRDfx8AAAAJ&hl=en" target="_blank" class="icon-button linkedin">
+          <a href="https://scholar.google.com/citations?user=3SRDfx8AAAAJ&hl=en" target="_blank" rel="noopener noreferrer" class="icon-button linkedin" aria-label="Google Scholar">
           <i class="ai ai-google-scholar-square icon-linkedin"></i>
             <span></span>
           </a>
 
-          <a href="https://github.com/RyanZ-O" target="_blank" class="icon-button github">
+          <a href="https://github.com/RyanZ-O" target="_blank" rel="noopener noreferrer" class="icon-button github" aria-label="GitHub">
             <i class="fa fa-github icon-github"></i>
             <span></span>
           </a>
 
-          <a href="https://www.linkedin.com/in/ruiyan-zheng-473807380/" target="_blank" class="icon-button linkedin">
+          <a href="https://www.linkedin.com/in/ruiyan-zheng-473807380/" target="_blank" rel="noopener noreferrer" class="icon-button linkedin" aria-label="LinkedIn">
             <i class="fa fa-linkedin icon-linkedin"></i>
             <span></span>
           </a>
 
-          <a href="https://www.researchgate.net/profile/Ruiyan-Zheng?ev=hdr_xprf" class="icon-button reseachgate" aria-label="RG" target="_blank" rel="noopener noreferrer">
+          <a href="https://www.researchgate.net/profile/Ruiyan-Zheng?ev=hdr_xprf" class="icon-button reseachgate" aria-label="ResearchGate" target="_blank" rel="noopener noreferrer">
             <i> <img src="images/rg.png" alt="" width="45" height="45" style="vertical-align:middle;"> </i>
             <span></span>
           </a>
 
-          <a href="mailto:zhengruiyan@u.nus.edu" target="_blank" class="icon-button linkedin">
+          <a href="mailto:zhengruiyan@u.nus.edu" class="icon-button linkedin" aria-label="Email Ruiyan Zheng">
             <i class="fa fa-envelope icon-linkedin"></i>
             <span></span>
           </a>
@@ -132,26 +130,26 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         </div>
         <div id="my-desc-content">
           I enjoy running, traveling, hiking, movies, music and so much more<br>
-        </div>
+      </div>
       </div> -->
-    </div>
+  </section>
 
 <div class="page-content">
 <div class="wrapper">
 <div id="bio" class="bio">
 
-  <h1 class="md-heading text-left">
+  <h2 class="md-heading text-left">
     <i class="fa fa-id-card" aria-hidden="true"></i>
     About
-  </h1>
-  <div class="bio-body" style="overflow:hidden;">
+  </h2>
+  <div class="bio-body">
     <p>
       I am a Ph.D. student in the <a href="https://cognition-x-lab.github.io/" target="_blank">Cognition X Lab</a> at the National University of Singapore (NUS). My research focuses on semantic digital twins for on-site construction rescheduling and reconfiguration. I received my Master's degree from <strong>Dalian University of Technology (DUT)</strong> in June 2025, where I worked on construction scheduling optimization. I am broadly interested in digital construction, construction management, and AI-enabled decision support. I am always open to research collaborations. Feel free to reach out!
 
       <br>
     </p>
 
-    <div style="width: 50%; float:left">
+    <div class="bio-column bio-interests">
 			<h3>
 		    <i class="fa fa-star" aria-hidden="true"></i>
 		    <strong>Interests</strong>
@@ -171,7 +169,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       </ul>
     </div>
 
-    <div style="width: 50%; float:right">
+    <div class="bio-column bio-education">
 			<h3>
 				<i class="fa fa-graduation-cap" aria-hidden="true"></i>
 				<strong>Education</strong>
@@ -198,10 +196,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 
 <div id="publications" class="publications">
-  <h1 class="md-heading text-left">
+  <h2 class="md-heading text-left">
     <i class="fa fa-file" aria-hidden="true"></i>
     Publications
-  </h1>
+  </h2>
 
   <div class="pub-list">
     <article class="pub pub-text">
@@ -317,10 +315,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <div class="wrapper">
   <div id="awards" class="bio">
-    <h1 class="md-heading text-left">
+    <h2 class="md-heading text-left">
       <i class="fa fa-tasks" aria-hidden="true"></i>
       Selected Honors &amp; Awards
-    </h1>
+    </h2>
     <ul>
       <li>Outstanding Paper Award on CRIOCM 2023</li>
       <li>Outstanding Master's Thesis of Dalian University of Technology</li>
@@ -344,22 +342,22 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
       <div class="footer-col  footer-col-2">
 
-          <a href="https://scholar.google.com/citations?user=3SRDfx8AAAAJ&hl=en" target="_blank" class="icon-button linkedin">
+          <a href="https://scholar.google.com/citations?user=3SRDfx8AAAAJ&hl=en" target="_blank" rel="noopener noreferrer" class="icon-button linkedin" aria-label="Google Scholar">
           <i class="ai ai-google-scholar-square icon-linkedin"></i>
             <span></span>
           </a>
 
-          <a href="https://github.com/RyanZ-O" target="_blank" class="icon-button github">
+          <a href="https://github.com/RyanZ-O" target="_blank" rel="noopener noreferrer" class="icon-button github" aria-label="GitHub">
             <i class="fa fa-github icon-github"></i>
             <span></span>
           </a>
 
-          <a href="https://www.linkedin.com/in/ruiyan-zheng-473807380/" target="_blank" class="icon-button linkedin">
+          <a href="https://www.linkedin.com/in/ruiyan-zheng-473807380/" target="_blank" rel="noopener noreferrer" class="icon-button linkedin" aria-label="LinkedIn">
             <i class="fa fa-linkedin icon-linkedin"></i>
             <span></span>
           </a>
 
-          <a href="https://www.researchgate.net/profile/Ruiyan-Zheng?ev=hdr_xprf" class="icon-button reseachgate" aria-label="RG" target="_blank" rel="noopener noreferrer">
+          <a href="https://www.researchgate.net/profile/Ruiyan-Zheng?ev=hdr_xprf" class="icon-button reseachgate" aria-label="ResearchGate" target="_blank" rel="noopener noreferrer">
             <i> <img src="images/rg.png" alt="" width="45" height="45" style="vertical-align:middle;"> </i>
             <span></span>
           </a>
@@ -367,7 +365,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 	<div class="footer-col footer-col-3">
     	<!--<a href="https://hits.seeyoufarm.com"><img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fwillhua127.github.io&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false"/></a> -->
 	<!-- <a href="https://hits.seeyoufarm.com"><img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?user=Lxe71v4AAAAJ&hl=en&url=https%3A%2F%2Fscholar.google.com%2Fcitations&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false"/></a> -->
-		<p class="text">Last updated: 20 Aug 2026.<br>The style of this website is inspired by <a href='https://cen-jun.com/' target="_blank">Jun CEN</a>. and <a href='https://leoyuan.site/' target="_blank">Zeqing Yuan</a>.</p> Thanks a lot!
+		<p class="text">Last updated: 20 Aug 2026.<br>The style of this website is inspired by <a href="https://cen-jun.com/" target="_blank" rel="noopener noreferrer">Jun CEN</a> and <a href="https://leoyuan.site/" target="_blank" rel="noopener noreferrer">Zeqing Yuan</a>. Thanks a lot!</p>
 	</div>
   </div>
   </div>
