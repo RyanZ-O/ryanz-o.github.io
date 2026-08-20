@@ -182,6 +182,184 @@ document.addEventListener('DOMContentLoaded', () => {
 
   applyPublicationFilter('selected', false);
 
+  const figureDialog = document.querySelector('#figure-lightbox');
+  const figureTriggers = [...document.querySelectorAll('[data-figure-trigger]')];
+  const lightboxClose = figureDialog?.querySelector('[data-lightbox-close]');
+  const lightboxPrevious = figureDialog?.querySelector('[data-lightbox-previous]');
+  const lightboxNext = figureDialog?.querySelector('[data-lightbox-next]');
+  const lightboxImageFrame = figureDialog?.querySelector('.figure-lightbox__image-frame');
+  const lightboxImageLink = figureDialog?.querySelector('#figure-lightbox-image-link');
+  const lightboxOriginal = figureDialog?.querySelector('#figure-lightbox-original');
+  const lightboxTitle = figureDialog?.querySelector('#figure-lightbox-title');
+  const lightboxCaption = figureDialog?.querySelector('#figure-lightbox-caption');
+  const lightboxSource = figureDialog?.querySelector('#figure-lightbox-source');
+  const lightboxDoi = figureDialog?.querySelector('#figure-lightbox-doi');
+  const lightboxCounter = figureDialog?.querySelector('#figure-lightbox-counter');
+  const lightboxStatus = figureDialog?.querySelector('#figure-lightbox-status');
+  const lightboxLoadingStatus = figureDialog?.querySelector('#figure-lightbox-loading-status');
+  const supportsDialog = Boolean(figureDialog && typeof figureDialog.showModal === 'function');
+  const lightboxImage = new Image();
+  let activeFigureIndex = 0;
+  let figureReturnFocus = null;
+  let figureLoadRevision = 0;
+  let activeFullImageLoader = null;
+
+  lightboxImage.className = 'figure-lightbox__image';
+  lightboxImage.decoding = 'async';
+  lightboxImageLink?.append(lightboxImage);
+
+  [lightboxPrevious, lightboxNext].forEach((button) => {
+    if (!button) return;
+    button.hidden = figureTriggers.length < 2;
+    button.disabled = figureTriggers.length < 2;
+  });
+
+  const normalizedFigureIndex = (index) => {
+    if (!figureTriggers.length) return 0;
+    return (index + figureTriggers.length) % figureTriggers.length;
+  };
+
+  const updateFigureDialog = (index) => {
+    const trigger = figureTriggers[normalizedFigureIndex(index)];
+    if (!trigger) return;
+
+    activeFigureIndex = normalizedFigureIndex(index);
+    const thumbnail = trigger.querySelector('img');
+    const fullImageUrl = trigger.href;
+    const imageWidth = Number(trigger.dataset.figureWidth);
+    const imageHeight = Number(trigger.dataset.figureHeight);
+    const loadRevision = ++figureLoadRevision;
+    const previewImageUrl = thumbnail?.currentSrc || thumbnail?.src || fullImageUrl;
+
+    lightboxImageFrame?.classList.add('is-loading');
+    lightboxImageFrame?.classList.remove('has-error');
+    lightboxImageFrame?.setAttribute('aria-busy', 'true');
+    if (lightboxLoadingStatus) lightboxLoadingStatus.textContent = '';
+
+    lightboxImage.alt = trigger.dataset.figureAlt || thumbnail?.alt || '';
+    if (Number.isFinite(imageWidth) && imageWidth > 0) {
+      lightboxImage.width = imageWidth;
+    } else {
+      lightboxImage.removeAttribute('width');
+    }
+    if (Number.isFinite(imageHeight) && imageHeight > 0) {
+      lightboxImage.height = imageHeight;
+    } else {
+      lightboxImage.removeAttribute('height');
+    }
+    lightboxImage.src = previewImageUrl;
+
+    if (activeFullImageLoader) activeFullImageLoader.src = '';
+    const fullImageLoader = new Image();
+    activeFullImageLoader = fullImageLoader;
+    fullImageLoader.decoding = 'async';
+    fullImageLoader.addEventListener('load', () => {
+      if (loadRevision !== figureLoadRevision) return;
+
+      lightboxImage.src = fullImageUrl;
+      lightboxImageFrame?.classList.remove('is-loading', 'has-error');
+      lightboxImageFrame?.setAttribute('aria-busy', 'false');
+      if (lightboxLoadingStatus) lightboxLoadingStatus.textContent = '';
+      activeFullImageLoader = null;
+    });
+    fullImageLoader.addEventListener('error', () => {
+      if (loadRevision !== figureLoadRevision) return;
+
+      lightboxImageFrame?.classList.remove('is-loading');
+      lightboxImageFrame?.classList.add('has-error');
+      lightboxImageFrame?.setAttribute('aria-busy', 'false');
+      if (lightboxLoadingStatus) {
+        lightboxLoadingStatus.textContent = 'The full-resolution figure could not be loaded. The preview remains available; use the source link for the publication.';
+      }
+      activeFullImageLoader = null;
+    });
+    fullImageLoader.src = fullImageUrl;
+
+    if (lightboxImageLink) {
+      lightboxImageLink.href = fullImageUrl;
+      lightboxImageLink.setAttribute(
+        'aria-label',
+        `Open full-resolution image: ${trigger.dataset.figureTitle || 'publication figure'}`,
+      );
+    }
+    if (lightboxOriginal) lightboxOriginal.href = fullImageUrl;
+    if (lightboxTitle) lightboxTitle.textContent = trigger.dataset.figureTitle || 'Publication figure';
+    if (lightboxCaption) {
+      lightboxCaption.textContent = trigger.dataset.figureCaption || 'Figure from the selected publication.';
+    }
+    if (lightboxSource) {
+      lightboxSource.href = trigger.dataset.figureSourceUrl || fullImageUrl;
+      lightboxSource.textContent = trigger.dataset.figureSourceLabel || 'Source publication';
+    }
+    if (lightboxDoi) {
+      const doiUrl = trigger.dataset.figureDoiUrl;
+      lightboxDoi.hidden = !doiUrl;
+      if (doiUrl) {
+        lightboxDoi.href = doiUrl;
+      } else {
+        lightboxDoi.removeAttribute('href');
+      }
+    }
+    if (lightboxCounter) {
+      lightboxCounter.textContent = `${activeFigureIndex + 1} of ${figureTriggers.length}`;
+    }
+    if (lightboxStatus) {
+      lightboxStatus.textContent = `Item ${activeFigureIndex + 1} of ${figureTriggers.length}: ${trigger.dataset.figureTitle || 'Publication figure'}`;
+    }
+  };
+
+  const openFigureDialog = (trigger, index) => {
+    if (!supportsDialog) return;
+
+    figureReturnFocus = trigger;
+    updateFigureDialog(index);
+    figureDialog.showModal();
+    document.documentElement.classList.add('dialog-open');
+    lightboxClose?.focus();
+  };
+
+  figureTriggers.forEach((trigger, index) => {
+    if (supportsDialog) {
+      trigger.setAttribute('aria-haspopup', 'dialog');
+      trigger.setAttribute('aria-controls', 'figure-lightbox');
+      const viewerHint = document.createElement('span');
+      viewerHint.className = 'visually-hidden';
+      viewerHint.textContent = 'Open figure viewer.';
+      trigger.append(viewerHint);
+    }
+
+    trigger.addEventListener('click', (event) => {
+      const modifiedClick = event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey;
+      if (!supportsDialog || modifiedClick) return;
+
+      event.preventDefault();
+      openFigureDialog(trigger, index);
+    });
+  });
+
+  lightboxClose?.addEventListener('click', () => figureDialog?.close());
+  lightboxPrevious?.addEventListener('click', () => updateFigureDialog(activeFigureIndex - 1));
+  lightboxNext?.addEventListener('click', () => updateFigureDialog(activeFigureIndex + 1));
+
+  figureDialog?.addEventListener('click', (event) => {
+    if (event.target === figureDialog) figureDialog.close();
+  });
+
+  figureDialog?.addEventListener('keydown', (event) => {
+    if (event.key === 'ArrowLeft') {
+      event.preventDefault();
+      updateFigureDialog(activeFigureIndex - 1);
+    } else if (event.key === 'ArrowRight') {
+      event.preventDefault();
+      updateFigureDialog(activeFigureIndex + 1);
+    }
+  });
+
+  figureDialog?.addEventListener('close', () => {
+    document.documentElement.classList.remove('dialog-open');
+    if (figureReturnFocus?.isConnected) figureReturnFocus.focus({ preventScroll: true });
+  });
+
   const publicationRevealTargets = [...document.querySelectorAll('.pub-card')];
   const revealTargets = [
     ...document.querySelectorAll('.md-heading, .bio-body, #awards ul, .site-footer .footer-col'),
@@ -308,6 +486,7 @@ document.addEventListener('DOMContentLoaded', () => {
   portrait?.addEventListener('pointercancel', resetTilt);
 
   const handleMotionPreference = () => {
+    publicationAnimations.forEach((_, card) => cancelPublicationAnimation(card));
     if (reducedMotion.matches) {
       revealEverything();
       resetTilt();
