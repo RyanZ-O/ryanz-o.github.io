@@ -46,7 +46,7 @@ body {
 
 body:after {
     display: none;
-    content: url("images/background/background1.JPG") url("images/background/background2.jpg")
+    content: url("images/background/background_nus_sde.jpg")
 }
 
 h1,
@@ -704,14 +704,14 @@ pre>code {
 
 .shallow-bg {
     /* background-image: url("images/background/background1.JPG"); */
-    background-image: url("images/background/background_hkust_2.jpg");
+    background-image: url("images/background/background_nus_sde.jpg");
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center center
 }
 
 .deep-bg {
-    background-image: url("images/background/background2.JPG");
+    background-image: url("images/background/background_nus_sde.jpg");
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center center
@@ -1619,6 +1619,29 @@ div.paginate-container li:nth-last-child(2) a:after {
     margin-bottom: 15px;
     /* padding-top: 15px; */
     overflow: auto
+}
+
+.pub-text {
+    box-sizing: border-box;
+    border: 1px solid #e2e2e2;
+    border-left: 4px solid #9b3022;
+    border-radius: 6px;
+    padding: 14px 16px
+}
+
+.pub-text>.pub-right {
+    float: none;
+    width: 100%
+}
+
+.pub-text .authors,
+.pub-text .pub-venue,
+.pub-text .tags {
+    margin-top: 5px
+}
+
+.pub-text .pub-venue {
+    color: #555
 }
 
 .pub-left {
