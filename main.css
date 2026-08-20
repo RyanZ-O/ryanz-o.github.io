@@ -408,19 +408,19 @@ pre>code {
 
 .sm-heading {
     font-size: 20px;
-    font-color: #9b3022;
+    color: #9b3022;
     font-weight: 300
 }
 
 .md-heading {
     font-size: 24px;
-    font-color: #9b3022;
+    color: #9b3022;
     font-weight: 400
 }
 
 .lg-heading {
     font-size: 30px;
-    font-color: #9b3022;
+    color: #9b3022;
     font-weight: 600
 }
 
@@ -752,22 +752,14 @@ pre>code {
 }
 
 .shallow-bg {
-    background-image: url("images/background/background_nus_sde.jpg");
-    background-image: image-set(
-        url("images/background/background_nus_sde.webp") type("image/webp"),
-        url("images/background/background_nus_sde.jpg") type("image/jpeg")
-    );
+    background-image: url("images/background/background_nus_sde.webp");
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center center
 }
 
 .deep-bg {
-    background-image: url("images/background/background_nus_sde.jpg");
-    background-image: image-set(
-        url("images/background/background_nus_sde.webp") type("image/webp"),
-        url("images/background/background_nus_sde.jpg") type("image/jpeg")
-    );
+    background-image: url("images/background/background_nus_sde.webp");
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center center
@@ -1969,15 +1961,15 @@ div.paginate-container li:nth-last-child(2) a:after {
     margin-bottom: 10pt;
     margin: auto;
     width: -webkit-calc(96%);
-    width: -calc(96%)
+    width: 96%
 }
 
 .project-figure>img {
-    align: middle
+    vertical-align: middle
 }
 
 .project-thumbnail>img {
-    align: middle;
+    vertical-align: middle;
     border: solid
 }
 
@@ -3240,11 +3232,7 @@ html.dialog-open {
     }
 
     .shallow-bg {
-        background-image: url("images/background/background_nus_sde.jpg");
-        background-image: image-set(
-            url("images/background/background_nus_sde-mobile.webp") type("image/webp"),
-            url("images/background/background_nus_sde.jpg") type("image/jpeg")
-        );
+        background-image: url("images/background/background_nus_sde-mobile.webp");
     }
 
     .wrapper {
@@ -3361,6 +3349,20 @@ html.dialog-open {
         padding: 46px 18px 54px;
     }
 
+    #profile-cover::before,
+    .profile-wrapper,
+    #profile-avatar {
+        animation: none;
+    }
+
+    html.motion-ready #profile-cover::before {
+        animation: hero-light-drift 14s ease-in-out infinite alternate;
+    }
+
+    html.motion-ready #profile-avatar {
+        animation: portrait-float 7.5s ease-in-out infinite;
+    }
+
     .profile-wrapper {
         grid-template-columns: minmax(0, 1fr);
         grid-template-areas:
@@ -3369,6 +3371,7 @@ html.dialog-open {
             "social";
         gap: 18px;
         width: min(440px, 100%);
+        min-height: 445px;
         padding: 30px 22px;
         text-align: center;
     }
@@ -3383,7 +3386,8 @@ html.dialog-open {
     }
 
     #my-name {
-        font-size: clamp(2.35rem, 12vw, 3.15rem);
+        font-size: clamp(2.1rem, 10vw, 2.75rem);
+        white-space: nowrap;
     }
 
     #my-title {

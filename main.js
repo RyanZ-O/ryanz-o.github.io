@@ -12,6 +12,25 @@ document.addEventListener('DOMContentLoaded', () => {
   const menuButton = menu?.querySelector('.menu-icon');
   const menuLinks = menu?.querySelectorAll('.page-link') ?? [];
 
+  const ambientMotionEvents = ['pointerdown', 'keydown', 'scroll'];
+  let ambientMotionTimer = 0;
+
+  const enableAmbientMotion = () => {
+    document.documentElement.classList.toggle('motion-ready', !reducedMotion.matches);
+    ambientMotionEvents.forEach((eventName) => {
+      window.removeEventListener(eventName, enableAmbientMotion);
+    });
+    if (ambientMotionTimer) window.clearTimeout(ambientMotionTimer);
+  };
+
+  ambientMotionEvents.forEach((eventName) => {
+    window.addEventListener(eventName, enableAmbientMotion, {
+      once: true,
+      passive: eventName !== 'keydown',
+    });
+  });
+  ambientMotionTimer = window.setTimeout(enableAmbientMotion, 15000);
+
   const progress = document.createElement('div');
   progress.className = 'scroll-progress';
   progress.setAttribute('aria-hidden', 'true');
@@ -487,6 +506,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const handleMotionPreference = () => {
     publicationAnimations.forEach((_, card) => cancelPublicationAnimation(card));
+    document.documentElement.classList.toggle(
+      'motion-ready',
+      !reducedMotion.matches && document.readyState === 'complete',
+    );
     if (reducedMotion.matches) {
       revealEverything();
       resetTilt();
