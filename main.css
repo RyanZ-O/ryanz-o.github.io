@@ -938,12 +938,17 @@ hr.soft {
     position: fixed;
     bottom: 2em;
     right: 0px;
+    border: 0;
     text-decoration: none;
     color: #35DACA;
     background-color: rgba(235, 235, 235, 0.8);
     font-size: 16px;
     font-weight: bold;
     padding: 1em;
+    cursor: pointer
+}
+
+.back-to-top[hidden] {
     display: none
 }
 
