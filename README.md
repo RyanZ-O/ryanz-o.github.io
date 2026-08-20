@@ -1,3 +1,4 @@
-# Homepage
-This is my personal website: Ruiyan ZHENG.com. Go live on December 5, 2025.
+# Ruiyan Zheng — Academic Homepage
 
+Personal academic website of Ruiyan Zheng, hosted at
+[ryanz-o.github.io](https://ryanz-o.github.io/).

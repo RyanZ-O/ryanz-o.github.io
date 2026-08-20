@@ -98,11 +98,6 @@ body {
     -webkit-text-size-adjust: 100%
 }
 
-body:after {
-    display: none;
-    content: url("images/background/background_nus_sde.jpg")
-}
-
 h1,
 h2,
 h3,
@@ -757,8 +752,11 @@ pre>code {
 }
 
 .shallow-bg {
-    /* background-image: url("images/background/background1.JPG"); */
     background-image: url("images/background/background_nus_sde.jpg");
+    background-image: image-set(
+        url("images/background/background_nus_sde.webp") type("image/webp"),
+        url("images/background/background_nus_sde.jpg") type("image/jpeg")
+    );
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center center
@@ -766,6 +764,10 @@ pre>code {
 
 .deep-bg {
     background-image: url("images/background/background_nus_sde.jpg");
+    background-image: image-set(
+        url("images/background/background_nus_sde.webp") type("image/webp"),
+        url("images/background/background_nus_sde.jpg") type("image/jpeg")
+    );
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center center
@@ -3235,6 +3237,14 @@ html.dialog-open {
 @media screen and (max-width: 700px) {
     html {
         scroll-padding-top: 76px;
+    }
+
+    .shallow-bg {
+        background-image: url("images/background/background_nus_sde.jpg");
+        background-image: image-set(
+            url("images/background/background_nus_sde-mobile.webp") type("image/webp"),
+            url("images/background/background_nus_sde.jpg") type("image/jpeg")
+        );
     }
 
     .wrapper {
