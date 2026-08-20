@@ -52,14 +52,148 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
+  const publicationCards = [...document.querySelectorAll('#publication-list .pub')];
+  const publicationFilterButtons = [...document.querySelectorAll('[data-publication-filter]')];
+  const publicationCount = document.querySelector('#publication-count');
+  const publicationAnimations = new Map();
+  const selectedPublicationCount = publicationCards.filter(
+    (card) => card.dataset.selected === 'true',
+  ).length;
+  let publicationView = 'selected';
+  let publicationRevision = 0;
+
+  const shouldShowPublication = (card, view = publicationView) =>
+    view === 'all' || card.dataset.selected === 'true';
+
+  const cancelPublicationAnimation = (card) => {
+    const animation = publicationAnimations.get(card);
+    if (!animation) return;
+
+    animation.cancel();
+    publicationAnimations.delete(card);
+  };
+
+  const animatePublication = (card, show, revision) => {
+    const wasHidden = card.hidden;
+    cancelPublicationAnimation(card);
+    const duration = reducedMotion.matches || typeof card.animate !== 'function' ? 0 : 190;
+
+    if (show) {
+      card.hidden = false;
+      card.inert = false;
+      if (!wasHidden || !duration) return;
+
+      const animation = card.animate(
+        [
+          { opacity: 0, transform: 'translate3d(0, 10px, 0)' },
+          { opacity: 1, transform: 'translate3d(0, 0, 0)' },
+        ],
+        { duration, easing: 'cubic-bezier(0.22, 1, 0.36, 1)' },
+      );
+      publicationAnimations.set(card, animation);
+      animation.finished
+        .catch(() => {})
+        .finally(() => {
+          if (publicationAnimations.get(card) === animation) {
+            publicationAnimations.delete(card);
+          }
+        });
+      return;
+    }
+
+    if (card.hidden) return;
+
+    if (card.contains(document.activeElement)) {
+      publicationFilterButtons.find(
+        (button) => button.dataset.publicationFilter === publicationView,
+      )?.focus();
+    }
+    card.inert = true;
+
+    if (!duration) {
+      card.hidden = true;
+      card.inert = false;
+      return;
+    }
+
+    const animation = card.animate(
+      [
+        { opacity: 1, transform: 'translate3d(0, 0, 0)' },
+        { opacity: 0, transform: 'translate3d(0, 8px, 0)' },
+      ],
+      { duration, easing: 'ease-in' },
+    );
+    publicationAnimations.set(card, animation);
+    animation.finished
+      .then(() => {
+        if (revision === publicationRevision && !shouldShowPublication(card)) {
+          card.hidden = true;
+          card.inert = false;
+          window.dispatchEvent(new Event('resize'));
+        }
+      })
+      .catch(() => {})
+      .finally(() => {
+        if (publicationAnimations.get(card) === animation) {
+          publicationAnimations.delete(card);
+        }
+      });
+  };
+
+  const applyPublicationFilter = (view, animate = true) => {
+    publicationView = view === 'all' ? 'all' : 'selected';
+    publicationRevision += 1;
+    const revision = publicationRevision;
+    const visibleCount = publicationView === 'all' ? publicationCards.length : selectedPublicationCount;
+
+    publicationFilterButtons.forEach((button) => {
+      button.setAttribute(
+        'aria-pressed',
+        String(button.dataset.publicationFilter === publicationView),
+      );
+    });
+
+    if (publicationCount) {
+      publicationCount.textContent =
+        publicationView === 'all'
+          ? `Showing all ${visibleCount} publications`
+          : `Showing ${visibleCount} selected publications`;
+    }
+
+    publicationCards.forEach((card) => {
+      const show = shouldShowPublication(card);
+      if (!animate) {
+        cancelPublicationAnimation(card);
+        card.hidden = !show;
+        card.inert = false;
+        return;
+      }
+
+      animatePublication(card, show, revision);
+    });
+  };
+
+  publicationFilterButtons.forEach((button) => {
+    button.addEventListener('click', () => {
+      applyPublicationFilter(button.dataset.publicationFilter, true);
+      window.dispatchEvent(new Event('resize'));
+    });
+  });
+
+  applyPublicationFilter('selected', false);
+
+  const publicationRevealTargets = [...document.querySelectorAll('.pub-card')];
   const revealTargets = [
-    ...document.querySelectorAll('.md-heading, .bio-body, .pub, #awards ul, .site-footer .footer-col'),
+    ...document.querySelectorAll('.md-heading, .bio-body, #awards ul, .site-footer .footer-col'),
+    ...publicationRevealTargets,
   ];
 
-  revealTargets.forEach((element, index) => {
+  revealTargets.forEach((element) => {
     element.classList.add('reveal-item');
-    const delay = element.matches('.pub') ? (index % 4) * 65 : 0;
-    element.style.setProperty('--reveal-delay', `${delay}ms`);
+  });
+
+  publicationRevealTargets.forEach((element, index) => {
+    element.style.setProperty('--reveal-delay', `${(index % 4) * 65}ms`);
   });
 
   let revealObserver;
@@ -178,6 +312,7 @@ document.addEventListener('DOMContentLoaded', () => {
       revealEverything();
       resetTilt();
     }
+    applyPublicationFilter(publicationView, false);
     scheduleScrollUpdate();
   };
 
