@@ -3099,6 +3099,42 @@ html.dialog-open {
     line-height: 1.7;
 }
 
+.visitor-map {
+    grid-column: 1 / -1;
+    min-width: 0;
+    margin-top: 4px;
+    padding-top: 24px;
+    overflow: hidden;
+    border-top: 1px solid rgba(141, 47, 39, 0.14);
+    text-align: center;
+}
+
+.visitor-map__label {
+    margin: 0 0 14px;
+    color: var(--color-ink);
+    font-family: var(--font-display);
+    font-size: 1.05rem;
+    font-weight: 650;
+}
+
+.visitor-map__widget {
+    width: min(360px, 100%);
+    min-height: 201px;
+    margin-inline: auto;
+}
+
+.visitor-map a,
+.visitor-map img,
+.visitor-map iframe,
+.visitor-map canvas,
+.visitor-map object {
+    max-width: 100% !important;
+}
+
+.visitor-map img {
+    height: auto;
+}
+
 .back-to-top {
     right: 24px;
     bottom: 24px;
